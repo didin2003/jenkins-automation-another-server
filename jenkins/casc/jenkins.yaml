@@ -1,0 +1,24 @@
+jenkins:
+  systemMessage: "Jenkins managed automatically through Terraform and JCasC"
+
+  numExecutors: 2
+
+  mode: NORMAL
+
+  securityRealm:
+    local:
+      allowsSignup: false
+      enableCaptcha: false
+      users:
+        - id: "${JENKINS_ADMIN_USERNAME}"
+          name: "${JENKINS_ADMIN_NAME}"
+          password: "${JENKINS_ADMIN_PASSWORD}"
+
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+unclassified:
+  location:
+    url: "${JENKINS_URL}"
+    adminAddress: "${JENKINS_ADMIN_EMAIL}"

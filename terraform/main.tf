@@ -1,0 +1,27 @@
+terraform {
+  required_version = ">= 1.5.0"
+
+  required_providers {
+    null = {
+      source  = "hashicorp/null"
+      version = "~> 3.2"
+    }
+  }
+}
+
+provider "null" {}
+
+resource "null_resource" "jenkins_install" {
+
+  provisioner "local-exec" {
+    command = "${path.module}/../scripts/install-jenkins.sh"
+
+    environment = {
+      JENKINS_URL            = var.jenkins_url
+      JENKINS_ADMIN_USERNAME = var.jenkins_admin_username
+      JENKINS_ADMIN_PASSWORD = var.jenkins_admin_password
+      JENKINS_ADMIN_NAME     = var.jenkins_admin_name
+      JENKINS_ADMIN_EMAIL    = var.jenkins_admin_email
+    }
+  }
+}
