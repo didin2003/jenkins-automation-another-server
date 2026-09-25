@@ -6,11 +6,8 @@ echo "======================================"
 echo " Jenkins Automated Installation"
 echo "======================================"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-
-PLUGINS_FILE="$PROJECT_DIR/jenkins/plugins.txt"
-CASC_FILE="$PROJECT_DIR/jenkins/casc/jenkins.yaml"
+PLUGINS_FILE="/tmp/jenkins-automation/jenkins/plugins.txt"
+CASC_FILE="/tmp/jenkins-automation/jenkins/casc/jenkins.yaml"
 
 echo ""
 echo "[1/8] Validating configuration..."
