@@ -12,6 +12,12 @@ terraform {
 provider "null" {}
 
 resource "null_resource" "jenkins_install" {
+  triggers = {
+    install_script = filesha256("${path.module}/../scripts/install-jenkins.sh")
+    plugins        = filesha256("${path.module}/../jenkins/plugins.txt")
+    casc           = filesha256("${path.module}/../jenkins/casc/jenkins.yaml")
+    jenkins_host   = var.jenkins_server_host
+  }
 
   connection {
     type        = "ssh"
@@ -36,13 +42,12 @@ resource "null_resource" "jenkins_install" {
   }
 
   provisioner "remote-exec" {
-
     inline = [
-      "chmod +x /tmp/install-jenkins.sh",
       "mkdir -p /tmp/jenkins-automation/jenkins/casc",
       "cp /tmp/plugins.txt /tmp/jenkins-automation/jenkins/plugins.txt",
       "cp /tmp/jenkins.yaml /tmp/jenkins-automation/jenkins/casc/jenkins.yaml",
-      "sudo -n env JENKINS_URL='${var.jenkins_url}' JENKINS_ADMIN_USERNAME='${var.jenkins_admin_username}' JENKINS_ADMIN_PASSWORD='${var.jenkins_admin_password}' JENKINS_ADMIN_NAME='${var.jenkins_admin_name}' JENKINS_ADMIN_EMAIL='${var.jenkins_admin_email}' /tmp/install-jenkins.sh"
+      "chmod +x /tmp/install-jenkins.sh",
+      "export JENKINS_URL='${var.jenkins_url}'; export JENKINS_ADMIN_USERNAME='${var.jenkins_admin_username}'; export JENKINS_ADMIN_PASSWORD='${var.jenkins_admin_password}'; export JENKINS_ADMIN_NAME='${var.jenkins_admin_name}'; export JENKINS_ADMIN_EMAIL='${var.jenkins_admin_email}'; /tmp/install-jenkins.sh"
     ]
   }
 }

@@ -103,6 +103,11 @@ sudo java -jar "$PLUGIN_MANAGER" \
     --plugin-file "$PLUGINS_FILE" \
     --plugin-download-directory /var/lib/jenkins/plugins
 
+echo "Fixing Jenkins plugin permissions..."
+
+sudo chown -R jenkins:jenkins /var/lib/jenkins/plugins
+sudo chmod -R u+rwX /var/lib/jenkins/plugins
+
 echo ""
 echo "[8/8] Configuring Jenkins with JCasC..."
 
