@@ -13,3 +13,5 @@ jenkins_admin_password = "test-password"
 jenkins_admin_name = "Didin PG"
 
 jenkins_admin_email = "didinpg8080@gmail.com"
+
+jenkins_version = "2.568.3"

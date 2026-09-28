@@ -1,3 +1,8 @@
+variable "jenkins_version" {
+  description = "Jenkins package version"
+  type        = string
+}
+
 variable "jenkins_server_host" {
   description = "IP address or hostname of the Jenkins server"
   type        = string

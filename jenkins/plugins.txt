@@ -5,3 +5,12 @@ credentials
 credentials-binding
 ssh-agent
 pipeline-stage-view
+
+#DEMO
+#configuration-as-code:1932.v75cb_b_f1b_698d
+#git:5.7.0
+#workflow-aggregator:608.v67378e9d3db_1
+#credentials:1415.v831096eb_5534
+#credentials-binding:687.v619cb_15e923f
+#ssh-agent:386.v36cc_4c_eb_7a_6
+#pipeline-stage-view:2.38

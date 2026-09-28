@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+exec > >(tee -a /tmp/jenkins-install.log) 2>&1
 
 echo "======================================"
 echo " Jenkins Automated Installation"
@@ -58,7 +59,15 @@ sudo apt-get install -y \
 echo ""
 echo "[5/8] Installing Jenkins..."
 
-if ! dpkg -s jenkins >/dev/null 2>&1; then
+if [ -z "${JENKINS_VERSION:-}" ]; then
+    echo "ERROR: JENKINS_VERSION is not set."
+    exit 1
+fi
+
+echo "Requested Jenkins version: ${JENKINS_VERSION}"
+
+if ! grep -q "pkg.jenkins.io/debian-stable" \
+    /etc/apt/sources.list.d/jenkins.list 2>/dev/null; then
 
     echo "Adding Jenkins repository..."
 
@@ -70,13 +79,17 @@ if ! dpkg -s jenkins >/dev/null 2>&1; then
     echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
 https://pkg.jenkins.io/debian-stable binary/" | \
         sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+fi
 
-    sudo apt-get update
+sudo apt-get update
 
-    sudo apt-get install -y jenkins
+CURRENT_VERSION=$(dpkg-query -W -f='${Version}' jenkins 2>/dev/null || true)
 
+if [ "$CURRENT_VERSION" = "$JENKINS_VERSION" ]; then
+    echo "Jenkins ${JENKINS_VERSION} is already installed."
 else
-    echo "Jenkins is already installed."
+    echo "Installing Jenkins version ${JENKINS_VERSION}..."
+    sudo apt-get install -y "jenkins=${JENKINS_VERSION}"
 fi
 
 echo ""
